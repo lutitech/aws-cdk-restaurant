@@ -1,0 +1,215 @@
+type AuthResponse @aws_api_key {
+	user: User
+	token: Token
+	error: String
+}
+
+input LoginPayload {
+	username: String!
+	password: String!
+}
+
+
+type Token @aws_api_key {
+	AccessToken: String
+	RefreshToken: String
+	IdToken: String
+	TokenType: String
+	ExpiresIn: Int
+}
+
+type User @aws_api_key
+@aws_cognito_user_pools {
+	id: String
+	firstName: String
+	lastName: String
+	email: AWSEmail
+	username: String
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+type Food {
+    id: String
+    name: String
+    description: String
+    price: Int
+    foodType: String
+    rating: Int
+    images: [String]
+    restaurantId: String
+}
+
+type Order {
+	id: String
+	orderData: [CartPayload]
+	subtotal: Int
+	createdAt: String
+	updatedAt: String
+}
+
+
+type OrderHistory {
+	user: UserData
+	order: [OrderData]
+}
+
+type UserData {
+	id: String
+	email: AWSEmail
+	contact_number: String
+}
+
+type OrderHistoryData {
+	foodId: String
+	foodType: String
+	foodName: String
+	foodPrice: String
+	totalPrice: Int
+	foodImage: String
+	foodQty: Int
+	
+}
+
+type OrderData {
+	id: String
+	orderData: [OrderHistoryData]
+	subtotal: Int
+	createdAt: String
+	updatedAt: String
+}
+
+type FoodPayload{
+    food: Food
+    error: String
+}
+
+type RestaurantPayload {
+    restaurant: Restaurant
+    error: String
+}
+
+type Restaurant {
+    id: String
+    name: String
+    email: String
+    address: String
+    phone: String
+}
+
+input CreateRestaurantPayload {
+    name: String
+    email: String
+    address: String
+    phone: String
+}
+
+input UpdateRestaurantPayload {
+    id: String
+    name: String
+    email: String
+    address: String
+    phone: String
+}
+
+input CreateOrderPayload {
+    restaurantId: String
+    totalAmount: String
+    PaidAmount: String
+    createdAt: AWSDate
+    remarks: String
+}
+
+input CreateFoodPayload {
+    id: String
+    name: String
+    description: String
+    price: Int
+    foodType: String
+    rating: Int
+    images: [String]
+    restaurantId: String
+}
+
+input UpdateFoodPayload{
+    id: String
+    name: String
+    description: String
+    price: Int
+    foodType: String
+    rating: Int
+    images: [String]
+    restaurantId: String
+    updatedAt: AWSDate
+}
+
+
+type Mutation {
+    signIn(loginPayload: LoginPayload): AuthResponse @aws_api_key
+    createRestaurant(restaurantPayload: CreateRestaurantPayload): RestaurantPayload
+    updateRestaurant(updateRestaurantPayload: UpdateRestaurantPayload): RestaurantPayload
+    deleteRestaurant(id:String): String
+    createFood(foodPayload:CreateFoodPayload ):  FoodPayload
+    updateFood(updateFoodPayload: UpdateFoodPayload): FoodPayload
+    deleteFood(id: String): String
+    addFoodtoCart(cartItemPayload: AddItemToCartPayload, userId: String): Cart
+    removeFoodFromCart(userId: String, id: String): Cart
+    addCartFoodToOrderHistory(userId: String, restaurantId: String): OrderHistory
+}
+
+type Query {
+    getRestaurant(id: String): RestaurantPayload
+    listAllRestaurants: [Restaurant]
+    getOrder(id: String): Order
+    listAllOrders: Order
+    getFood(id: String): FoodPayload
+    listAllFood: [Food]
+    listOrdersByRestaurant(id: String): [Order]
+    listFoodByRestaurant(restaurantId: String): [Food]
+    getAdminDashboard(id: String): AdminFullPayload
+   
+}
+
+type Cart {
+	id: String
+	cartData: [CartPayload]
+	subTotal: Int
+    error: String
+	createdAt: String
+	updatedAt: String
+}
+
+type CartPayload {
+	foodId: String
+	foodType: String
+	foodName: String
+	foodPrice: String
+	totalPrice: Int
+	foodImage: String
+	foodQty: Int
+	
+}
+
+input AddItemToCartPayload {
+	foodId: String
+	foodType: String
+	foodName: String
+	foodPrice: String
+	foodImage: String
+	foodQty: String
+}
+
+
+type AdminSummary {
+ totalFood: Int
+ totalOrders: Int
+ totalUsers: Int
+ totalEarnings: String
+ totalRestaurant: Int
+ 
+}
+
+type AdminFullPayload {
+adminSummary: AdminSummary
+error: String
+}
