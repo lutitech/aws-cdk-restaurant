@@ -31,13 +31,18 @@ type User @aws_api_key
 
 type Food {
     id: String
-    name: String
+    foodName: String
     description: String
     price: Int
     foodType: String
     rating: Int
     images: [String]
     restaurantId: String
+    locationId: String
+}
+type Location {
+    id: String
+    name: String
 }
 
 type Order {
@@ -122,24 +127,31 @@ input CreateOrderPayload {
 
 input CreateFoodPayload {
     id: String
-    name: String
+    foodName: String
     description: String
     price: Int
     foodType: String
     rating: Int
     images: [String]
     restaurantId: String
+    locationId: String
+}
+
+input createLocationPayload {
+        id: String
+        name: String
 }
 
 input UpdateFoodPayload{
     id: String
-    name: String
+    foodName: String
     description: String
     price: Int
     foodType: String
     rating: Int
     images: [String]
     restaurantId: String
+    locationId: String
     updatedAt: AWSDate
 }
 
@@ -147,6 +159,7 @@ input UpdateFoodPayload{
 type Mutation {
     signIn(loginPayload: LoginPayload): AuthResponse @aws_api_key
     createRestaurant(restaurantPayload: CreateRestaurantPayload): RestaurantPayload
+    createLocation(locationPayload: createLocationPayload): Location
     updateRestaurant(updateRestaurantPayload: UpdateRestaurantPayload): RestaurantPayload
     deleteRestaurant(id:String): String
     createFood(foodPayload:CreateFoodPayload ):  FoodPayload
@@ -167,6 +180,8 @@ type Query {
     listOrdersByRestaurant(id: String): [Order]
     listFoodByRestaurant(restaurantId: String): [Food]
     getAdminDashboard(id: String): AdminFullPayload
+    listFoodByLocation(foodName: String, locationId: String): [Food]
+   
    
 }
 

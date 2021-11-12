@@ -244,6 +244,11 @@ export class TestStack extends cdk.Stack {
       fieldName: "createFood"
     });
 
+    lambdaDs.createResolver({
+      typeName: "Mutation",
+      fieldName: "createLocation"
+    });
+
       lambdaDs.createResolver({
       typeName: "Mutation",
       fieldName: "createRestaurant"
@@ -300,6 +305,11 @@ export class TestStack extends cdk.Stack {
     lambdaDs.createResolver({
       typeName: "Query",
       fieldName: "listFoodByRestaurant"
+    })
+
+    lambdaDs.createResolver({
+      typeName: "Query",
+      fieldName: "listFoodByLocation"
     })
 
     lambdaDs.createResolver({
@@ -372,6 +382,19 @@ export class TestStack extends cdk.Stack {
         type: ddb.AttributeType.STRING,
     },
 });
+
+testTable.addGlobalSecondaryIndex({
+  indexName: 'foodNameType-id-index',
+  partitionKey: {
+      name: 'foodNameType',
+      type: ddb.AttributeType.STRING,
+  },
+  sortKey: {
+      name: 'id',
+      type: ddb.AttributeType.STRING,
+  },
+});
+
 
 testTable.addGlobalSecondaryIndex({
   indexName: 'userId-id-index',

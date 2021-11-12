@@ -13,9 +13,10 @@ const createFood = async (food: Food) => {
     id,
     item: id,
     description: food.description,
-    name: food.name,
+    foodName: food.foodName,
     price: food.price,
     objectType: 'food',
+    locationId: food.locationId,
     foodType: food.foodType,
     restaurantId: food.restaurantId,
     createdAt,
@@ -28,7 +29,9 @@ const createFood = async (food: Food) => {
   try {
     await docClient.put(params).promise();
     Object.assign(food);
+    console.log(foodObject)
     return {food: foodObject};
+    
   } catch (error) {
     console.log('DynamoDB error: ', error);
     return {error: error};

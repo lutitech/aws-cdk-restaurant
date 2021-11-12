@@ -16,11 +16,14 @@ import listOrdersByRestaurant from "./listOrdersByRestaurant"
 import updateFood from "./updateFood"
 import updateRestaurant from "./updateRestaurant"
 import signIn from "./signIn"
+import createLocation from "./createLocation"
+import listFoodByLocation from "./listFoodByLocation"
 import {
     Food, 
     Restaurant,
     CartPayload,
-    LoginPayload
+    LoginPayload,
+    Location
 } from "./types"
 
 
@@ -34,12 +37,15 @@ type AppSyncEvent = {
     },
     arguments: {
         id: string
+        foodName: string
+        locationId: String
         restaurantId: string
         userId: string
         foodPayload: Food
         restaurantPayload: Restaurant
         cartItemPayload: CartPayload
         loginPayload: LoginPayload
+        locationPayload: Location
     }
 }
 
@@ -72,11 +78,7 @@ exports.handler = async (event:AppSyncEvent) => {
                 userId: (event.arguments.userId),
                 payload: event.arguments.cartItemPayload,
               })
-        // case 'addFoodtoCart':
-        //         return await removeFoodFromCart({
-        //             userId: (event.arguments.userId),
-        //             foodId: event.arguments.id,
-        //           })
+        
         case 'addCartFoodToOrderHistory':
                     return await addCartFoodToOrderHistory({
                         userId:event.arguments.userId,
@@ -89,6 +91,10 @@ exports.handler = async (event:AppSyncEvent) => {
             return await updateFood(event.arguments.foodPayload)
         case 'updateRestaurant':
             return await updateRestaurant(event.arguments.restaurantPayload)
+        case 'createLocation':
+            return await createLocation(event.arguments.locationPayload)
+        case 'listFoodByLocation':
+            return await listFoodByLocation(event.arguments.foodName, event.arguments.locationId);
         default:
             return null
     }

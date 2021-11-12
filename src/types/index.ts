@@ -1,12 +1,13 @@
 export type Food = {
     id: String
-    name: String
+    foodName: String
     description: String
     price: String
     foodType: String
     rating: String
     images: [String]
     restaurantId: String
+    locationId: String
 }
 
 export type Order = {
@@ -48,4 +49,9 @@ export type CartPayload = {
 export type LoginPayload ={
 	username: String
 	password: String
+}
+
+export type Location = {
+    id: String
+    name: String
 }
