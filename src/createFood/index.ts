@@ -38,4 +38,5 @@ const createFood = async (food: Food) => {
   }
 }
 
+
 export default createFood;

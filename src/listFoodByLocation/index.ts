@@ -8,13 +8,19 @@ const listFoodByLocation = async (foodName: String, locationId: String) => {
 
         const params = {
             TableName: process.env.TEST_TABLE,
-           FilterExpression: "contains(locationId, :locationId) AND contains(foodName, :foodName) ",
+            IndexName: 'locationId-id-index',
+            KeyConditionExpression: '#locationId = :locationId',
+            FilterExpression: '#foodName = :foodName',
+            ExpressionAttributeNames: {
+                '#locationId': 'locationId',
+                '#foodName': 'foodName'
+            },
             ExpressionAttributeValues: {
-              ":foodName": foodName,
-              ":locationId": locationId
+                 ':locationId': locationId,
+                ':foodName': foodName
             },
   }
-       const {Items} = await docClient.scan(params).promise();
+       const {Items} = await docClient.query(params).promise();
         console.log(Items)
         return Items
     }catch (err) {

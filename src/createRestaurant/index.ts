@@ -15,6 +15,7 @@ const createRestaurant = async (restaurant: Restaurant) => {
     name: restaurant.name,
     email: restaurant.email,
     address: restaurant.address,
+    //locationId: restaurant.locationId,
     phone: restaurant.phone,
     objectType: 'restaurant',
     createdAt,

@@ -8,6 +8,7 @@ export type Food = {
     images: [String]
     restaurantId: String
     locationId: String
+    
 }
 
 export type Order = {
@@ -24,6 +25,7 @@ export type Restaurant = {
     email: String
     address: String
     phone: String
+    
 }
 
 export type Cart = {
